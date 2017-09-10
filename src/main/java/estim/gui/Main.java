@@ -1,4 +1,4 @@
-package estim.gui.misc;
+package estim.gui;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -9,10 +9,6 @@ import java.util.Observer;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 
-import estim.gui.AppCtx;
-import estim.gui.AudioWorker;
-import estim.gui.ControllerWorker;
-import estim.gui.OutputPort;
 import estim.gui.gui.MainWindow;
 import estim.gui.gui.ObservableString;
 import estim.gui.gui.PortSelectorWindow;

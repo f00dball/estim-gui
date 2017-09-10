@@ -35,7 +35,7 @@ public class EStimDevice {
 		this.device = device;
 	}
 	
-	protected void writeToDevice(final String value) throws DeviceException {
+	protected synchronized void writeToDevice(final String value) throws DeviceException {
 		try {
 			outputStream.write((value + "\r").getBytes());
 			
@@ -161,17 +161,24 @@ public class EStimDevice {
 	
 	public void close() throws DeviceException {
 		
-		// Disable outputs 
-		kill();
+		if(serialPort != null) {
+			// Disable outputs 
+			kill();
+			
+			serialPort.close();
+			serialPort = null;
+		}
 		
-		serialPort.close();
-		serialPort = null;
 		inputStream = null;
 		outputStream = null;
 	}
 	
 	public EStimDeviceState getState() {
 		return eStimDeviceState;
+	}
+	
+	public void refreshState() throws DeviceException {
+		writeToDevice("");
 	}
 	
 	protected boolean isInfoReadCompletely(final StringBuilder sb) {

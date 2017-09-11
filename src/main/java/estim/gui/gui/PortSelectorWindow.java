@@ -11,21 +11,18 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import estim.gui.Const;
 import estim.gui.OutputPort;
 import gnu.io.CommPortIdentifier;
 
 public class PortSelectorWindow extends JFrame {
 
-
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 7902392867579734553L;
 	
 	protected final ObservableString resultObserver = new ObservableString();
-	protected final JComboBox<String> portComboBox = new JComboBox<String>();
 	
-	protected final static boolean DEVEL_MODE = true;
+	protected final JComboBox<String> portComboBox = new JComboBox<>();
+		
 	public final static String DEVELOPMENT_LOOPBACK = "DEVELOPMENT: Loopback";
 
 	public PortSelectorWindow() {
@@ -75,13 +72,11 @@ public class PortSelectorWindow extends JFrame {
 	protected void loadData() {
 		final List<CommPortIdentifier> portList = OutputPort.getPortList();
 		
-		if(DEVEL_MODE) {
+		if(Const.DEVELOPMENT_MODE) {
 			portComboBox.addItem(DEVELOPMENT_LOOPBACK);
 		}
 		
-		for(final CommPortIdentifier id : portList) {
-			portComboBox.addItem(id.getName());
-		}		
+		portList.forEach((i) -> portComboBox.addItem(i.getName()));
 	}
 	
 	public ObservableString getResultObserver() {

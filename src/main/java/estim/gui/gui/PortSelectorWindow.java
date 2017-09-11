@@ -1,10 +1,6 @@
 package estim.gui.gui;
 
-import gnu.io.CommPortIdentifier;
-
 import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
@@ -16,6 +12,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import estim.gui.OutputPort;
+import gnu.io.CommPortIdentifier;
 
 public class PortSelectorWindow extends JFrame {
 
@@ -32,7 +29,7 @@ public class PortSelectorWindow extends JFrame {
 	public final static String DEVELOPMENT_LOOPBACK = "DEVELOPMENT: Loopback";
 
 	public PortSelectorWindow() {
-		setTitle("Ausgabeport");
+		setTitle("Output Port");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		getContentPane().setLayout(new BorderLayout());
@@ -51,9 +48,7 @@ public class PortSelectorWindow extends JFrame {
 		final JButton okButton = new JButton("Select");
 		final JButton cancelButton = new JButton("Close");
 		
-		okButton.addActionListener(new ActionListener() {
-			
-			public void actionPerformed(final ActionEvent e) {
+		okButton.addActionListener((e) -> {
 				final String portName = portComboBox.getSelectedItem().toString();
 				
 				resultObserver.setData(portName);
@@ -62,14 +57,12 @@ public class PortSelectorWindow extends JFrame {
 				setVisible(false);
 				dispose();
 			}
-		});
+		);
 		
-		cancelButton.addActionListener(new ActionListener() {
-			
-			public void actionPerformed(final ActionEvent e) {
+		cancelButton.addActionListener((e) -> {
 				System.exit(0);
 			}
-		});
+		);
 		
 		final JPanel buttonPanel = new JPanel();
 		buttonPanel.setLayout(new BorderLayout());

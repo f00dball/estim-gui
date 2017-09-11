@@ -207,7 +207,6 @@ public class EStimDevice {
 		}
 		
 		eStimDeviceState = new EStimDeviceState(sb.toString());
-		System.out.println(sb);
 	}
 
 	/**
@@ -219,12 +218,34 @@ public class EStimDevice {
 		final EStimDevice eStimDevice = new EStimDevice(defaultPort);
 		eStimDevice.open();
 		
-		for(int i = 0; i < 25; i++) {
-			eStimDevice.setA((short) i);
-			eStimDevice.setB((short) i);
-			Thread.sleep(1000);
-		}
+		int base = 12;
 		
+		for(int loop = 0; loop < 3; loop++) {
+			
+			for(int i = 0; i < 10; i++) {
+				System.out.println("Level " + i);
+				eStimDevice.setA((short) (i + base));
+				Thread.sleep(4000);
+			}
+			
+			for(int i = 0; i < 10; i++) {
+				System.out.println("Wait..." + i);
+				Thread.sleep(1000);
+			}
+			
+			for(int i = 10; i >= 0; i--) {
+				eStimDevice.setA((short) (i + base));
+				Thread.sleep(200);
+			}
+			
+			for(int i = 0; i < 20; i++) {
+				System.out.println("Wait..." + i);
+				Thread.sleep(1000);
+			}
+
+			base = base + 3;
+		}
+				
 		eStimDevice.close();
 	}
 }

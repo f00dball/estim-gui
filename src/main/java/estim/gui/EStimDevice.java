@@ -11,6 +11,7 @@ import java.util.Random;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import estim.gui.util.CloseableHelper;
 import gnu.io.CommPortIdentifier;
 import gnu.io.SerialPort;
 
@@ -166,7 +167,10 @@ public class EStimDevice {
 			serialPort = null;
 		}
 		
+		CloseableHelper.closeWithoutException(inputStream);
 		inputStream = null;
+		
+		CloseableHelper.closeWithoutException(outputStream);
 		outputStream = null;
 	}
 	

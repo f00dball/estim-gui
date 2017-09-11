@@ -1,6 +1,8 @@
 package estim.gui.gui;
 
 import java.awt.BorderLayout;
+import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
@@ -12,7 +14,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import estim.gui.Const;
-import estim.gui.OutputPort;
 import gnu.io.CommPortIdentifier;
 
 public class PortSelectorWindow extends JFrame {
@@ -68,9 +69,25 @@ public class PortSelectorWindow extends JFrame {
 		
 		getContentPane().add(buttonPanel, BorderLayout.SOUTH);
 	}
+	
+	public static List<CommPortIdentifier> getPortList() {
+		final List<CommPortIdentifier> resultList = new ArrayList<>();
+		@SuppressWarnings("rawtypes")
+		final Enumeration portList = CommPortIdentifier.getPortIdentifiers();
+
+		while (portList.hasMoreElements()) {
+			final CommPortIdentifier portId = (CommPortIdentifier) portList.nextElement();
+
+			if (portId.getPortType() == CommPortIdentifier.PORT_SERIAL) {
+				resultList.add(portId);
+			}
+		}
+		
+		return resultList;
+	}
 
 	protected void loadData() {
-		final List<CommPortIdentifier> portList = OutputPort.getPortList();
+		final List<CommPortIdentifier> portList = getPortList();
 		
 		if(Const.DEVELOPMENT_MODE) {
 			portComboBox.addItem(DEVELOPMENT_LOOPBACK);

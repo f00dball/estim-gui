@@ -15,7 +15,8 @@ import estim.gui.gui.PortSelectorWindow;
 
 public class Main {
 	
-
+	protected static EStimDevice eStimDevice;
+	
 	static class GUIResultWrapper {
 		private String port;
 
@@ -75,17 +76,7 @@ public class Main {
 		OutputStream os = null;
 		
 		if(! port.contains("DEVELOPMENT")) {
-			final OutputPort serialPort = new OutputPort(port);
-			
-			serialPort.openPort();
-			
-			if(! serialPort.isPortOpen()) {
-				System.out.println("Unable to open port");
-				return;
-			}
-			
-			 is = serialPort.getInputStream();
-			 os = serialPort.getOutputStream();
+			eStimDevice = new EStimDevice(port);
 		}
 		
 		final MainWindow mainWindow = new MainWindow(port);

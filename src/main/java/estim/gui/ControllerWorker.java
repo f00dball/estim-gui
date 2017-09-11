@@ -1,6 +1,5 @@
 package estim.gui;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
@@ -83,39 +82,12 @@ public class ControllerWorker implements Runnable {
 		logger.debug("Delay: " + guiDelayTime);
 		
 		if(!dummyMode) {
-			final SendPackage sendPackage = new SendPackage(power, guiDelayTime, WaveForm.DOWN_UP);
-			logger.debug("Sending package");
-			try {
-				sendPackage.send(os);
-			} catch (IOException e) {
-				return;
-			}
+	
 		}
 	}
 
 	public OutputHistory getPowerHistory() {
 		return powerHistory;
-	}
-
-	protected void readResult(boolean dummyMode) {
-		// Update gui from controller
-		if(dummyMode) {
-			mainwindow.getPoti1TextField().setText("0");
-			mainwindow.getPoti2TextField().setText("0");
-		} else {
-			logger.debug("Read result");
-			final ReceivePackage receivePackage = new ReceivePackage();
-			try {
-				receivePackage.readData(is);
-				mainwindow.getPoti1TextField().setText(receivePackage.readValue(ReceivePackage.POTI1_BYTE).getValue());
-				mainwindow.getPoti2TextField().setText(receivePackage.readValue(ReceivePackage.POTI2_BYTE).getValue());
-			} catch (IOException e) {
-				logger.warn("Exception", e);
-			} catch (TimeoutException e) {
-				logger.info("Timeout exception");
-				logger.warn("Exception", e);
-			}
-		}
 	}
 
 	public void setActive(boolean active) {

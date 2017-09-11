@@ -6,6 +6,7 @@ import java.io.OutputStream;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.Random;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -199,7 +200,7 @@ public class EStimDevice {
 			if(loop > 100) {
 				logger.error("Unable to read device result");
 				return;
-			}
+			}			
 		}
 		
 		eStimDeviceState = new EStimDeviceState(sb.toString());
@@ -213,15 +214,18 @@ public class EStimDevice {
 		final String defaultPort = "/dev/tty.usbserial-FT9RF2ZO";
 		final EStimDevice eStimDevice = new EStimDevice(defaultPort);
 		eStimDevice.open();
+		System.out.println("Setting mode");
 		eStimDevice.setMode(ProgramMode.CONTINOUS);
 		int base = 12;
 		
-		for(int loop = 0; loop < 3; loop++) {
+		final Random random = new Random();
+		
+		for(int loop = 0; loop < 5; loop++) {
 			
 			for(int i = 0; i < 10; i++) {
+				Thread.sleep(random.nextInt(5000));
 				System.out.println("Level " + i);
 				eStimDevice.setA((short) (i + base));
-				Thread.sleep(4000);
 			}
 			
 			for(int i = 0; i < 10; i++) {
@@ -229,12 +233,24 @@ public class EStimDevice {
 				Thread.sleep(1000);
 			}
 			
-			for(int i = 10; i >= 0; i--) {
+			int extra = random.nextInt(5);
+			for(int i = 0; i < extra; i++) {
+				Thread.sleep(random.nextInt(5000));
+				System.out.println("Extra Level " + i);
+				eStimDevice.setA((short) (10 + i + base));
+			}
+			
+			for(int i = 0; i < 10; i++) {
+				System.out.println("Wait..." + i);
+				Thread.sleep(1000);
+			}
+			
+			for(int i = 10 + extra; i >= 0; i--) {
 				eStimDevice.setA((short) (i + base));
 				Thread.sleep(200);
 			}
 			
-			for(int i = 0; i < 20; i++) {
+			for(int i = 0; i < 10; i++) {
 				System.out.println("Wait..." + i);
 				Thread.sleep(1000);
 			}

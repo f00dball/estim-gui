@@ -35,6 +35,25 @@ public class AudioWorker implements Runnable {
 		AudioFormat audioFormat = new AudioFormat(
 				AudioFormat.Encoding.PCM_UNSIGNED, 8000.0F, 8, 1, 1, 8000,
 				false);
+		
+		/*
+		 * Mixer.Info[] mixerInfos = AudioSystem.getMixerInfo();
+ for (Mixer.Info info: mixerInfos){
+  Mixer m = AudioSystem.getMixer(info);
+  Line.Info[] lineInfos = m.getSourceLineInfo();
+  for (Line.Info lineInfo:lineInfos){
+   System.out.println (info.getName()+"---"+lineInfo);
+   Line line = m.getLine(lineInfo);
+   System.out.println("\t-----"+line);
+  }
+  lineInfos = m.getTargetLineInfo();
+  for (Line.Info lineInfo:lineInfos){
+   System.out.println (m+"---"+lineInfo);
+   Line line = m.getLine(lineInfo);
+   System.out.println("\t-----"+line);
+
+  }
+		 */
 		DataLine.Info info = new DataLine.Info(TargetDataLine.class,
 				audioFormat);
 		try {
@@ -58,10 +77,7 @@ public class AudioWorker implements Runnable {
 			int max = 0;
 			
 			for (int i = 0; i < cnt; i++) {
-
-				PacketValue packetValue = new PacketValue(tempBuffer[i]);
-				int totalValue = packetValue.getIntValue();
-				totalValue = totalValue - 127;
+				int totalValue = (int) tempBuffer[i];
 
 				if(totalValue > max) {
 					max = totalValue;

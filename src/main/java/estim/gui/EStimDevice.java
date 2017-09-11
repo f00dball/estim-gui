@@ -97,16 +97,12 @@ public class EStimDevice {
 		writeToDevice("D" + Short.toString(value));
 	}
 	
-	public void setMode(final short value) throws DeviceException {
+	public void setMode(final ProgramMode programMode) throws DeviceException {
 		if(serialPort == null) {
 			throw new DeviceException("Not connected");
 		}
 		
-		if(value < 0 || value > 15) {
-			throw new DeviceException("Invalid value for mode: " + value);
-		}
-		
-		writeToDevice("M" + Short.toString(value));
+		writeToDevice("M" + programMode.getProgramNumber());
 	}
 	
 	public void setPowerMode(final boolean high) throws DeviceException {
@@ -217,7 +213,7 @@ public class EStimDevice {
 		final String defaultPort = "/dev/tty.usbserial-FT9RF2ZO";
 		final EStimDevice eStimDevice = new EStimDevice(defaultPort);
 		eStimDevice.open();
-		
+		eStimDevice.setMode(ProgramMode.CONTINOUS);
 		int base = 12;
 		
 		for(int loop = 0; loop < 3; loop++) {

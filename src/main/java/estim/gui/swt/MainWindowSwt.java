@@ -10,14 +10,14 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Scale;
 import org.eclipse.swt.widgets.Shell;
 
-import estim.gui.DeviceException;
-import estim.gui.EStimDevice;
-import estim.gui.ProgramMode;
+import estim.device.DeviceException;
+import estim.device.EStimDevice;
+import estim.device.ProgramMode;
 
 public class MainWindowSwt {
 	
 	private final EStimDevice estim;
-	
+	  
 	String statusMessage = "Ready";
 	Label statusLabel;
 	Label currentFrequencyLabel;

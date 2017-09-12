@@ -78,6 +78,28 @@ public class MainWindowSwt {
 		}
 	}
 	
+	private void updateProgramMode(String mode) {
+		ProgramMode programMode = ProgramMode.valueOf(ProgramMode.class, mode);
+		
+		try {
+			estim.setMode(programMode);
+		} catch (DeviceException e) {
+			e.printStackTrace();
+			statusLabel.setText("Error updating program mode: " + e.getLocalizedMessage());
+		}
+	}
+	
+	private void updatePowerLevel(String level) {
+		boolean high = level.equalsIgnoreCase("HIGH");
+		
+		try {
+			estim.setPowerMode(high);
+		} catch (DeviceException e) {
+			e.printStackTrace();
+			statusLabel.setText("Error updating power level: " + e.getLocalizedMessage());
+		}
+	}
+	
 	private void initUI(Display display) {
 		Shell shell = new Shell(display, SWT.SHELL_TRIM | SWT.CENTER);
 		
@@ -244,6 +266,7 @@ public class MainWindowSwt {
 		}
 		
 		programCombo.setItems(programModeItems);
+		programCombo.addListener(SWT.Selection, evetn -> updateProgramMode(programCombo.getText()));
 		GridData programComboData = new GridData(SWT.FILL, SWT.BEGINNING, true, false);
 		programCombo.setLayoutData(programComboData);
 		
@@ -260,6 +283,7 @@ public class MainWindowSwt {
 		String[] powerLevelItems = new String[] { "LOW", "HIGH" };
 		
 		powerLevelCombo.setItems(powerLevelItems);
+		powerLevelCombo.addListener(SWT.Selection, event -> updatePowerLevel(powerLevelCombo.getText()));
 		GridData powerLevelComboData = new GridData(SWT.FILL, SWT.BEGINNING, true, false);
 		powerLevelCombo.setLayoutData(powerLevelComboData);
 		

@@ -99,7 +99,7 @@ public class EStimDevice {
 		writeToDevice("D" + Short.toString(value));
 	}
 	
-	public void setMode(final ProgramMode programMode) throws DeviceException {
+	public void setProgramMode(final ProgramMode programMode) throws DeviceException {
 		if(serialPort == null) {
 			throw new DeviceException("Not connected");
 		}
@@ -220,7 +220,7 @@ public class EStimDevice {
 		final EStimDevice eStimDevice = new EStimDevice(defaultPort);
 		eStimDevice.open();
 		System.out.println("Setting mode");
-		eStimDevice.setMode(ProgramMode.CONTINOUS);
+		eStimDevice.setProgramMode(ProgramMode.CONTINOUS);
 		int base = 12;
 		
 		final Random random = new Random();

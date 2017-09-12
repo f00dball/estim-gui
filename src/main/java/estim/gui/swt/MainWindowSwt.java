@@ -80,9 +80,9 @@ public class MainWindowSwt {
 	
 	private void updateProgramMode(String mode) {
 		ProgramMode programMode = ProgramMode.valueOf(ProgramMode.class, mode);
-		
+
 		try {
-			estim.setMode(programMode);
+			estim.setProgramMode(programMode);
 		} catch (DeviceException e) {
 			e.printStackTrace();
 			statusLabel.setText("Error updating program mode: " + e.getLocalizedMessage());

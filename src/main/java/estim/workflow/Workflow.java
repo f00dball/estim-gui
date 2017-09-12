@@ -9,8 +9,12 @@ public class Workflow {
 
 	protected final List<WorkflowComponent> components;
 	
-	public Workflow() {
+	private Workflow() {
 		this.components = new ArrayList<>();
+	}
+	
+	public static Workflow create() {
+		return new Workflow();
 	}
 	
 	public Workflow addNextWorkflowComponent(final WorkflowComponent workflowComponent) {
@@ -18,4 +22,7 @@ public class Workflow {
 		return this;
 	}
 
+	public List<WorkflowComponent> getComponents() {
+		return components;
+	}
 }

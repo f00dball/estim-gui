@@ -2,6 +2,7 @@ package estim.workflow.component;
 
 import java.util.concurrent.TimeUnit;
 
+import estim.device.DeviceException;
 import estim.device.EStimDevice;
 import estim.device.EStimDeviceState;
 
@@ -21,20 +22,34 @@ public class AdjustOuputLevelOverTime implements WorkflowComponent {
 	}
 
 	@Override
-	public EStimDeviceState execute(EStimDevice eStimDevice, EStimDeviceState eStimDeviceState)
-			throws InterruptedException {
+	public EStimDeviceState execute(final EStimDevice eStimDevice, final EStimDeviceState eStimDeviceState)
+			throws InterruptedException, DeviceException {
 		
 		final long milliseconds = timeUnit.toMillis(timeValue);
 		
-		final long sleep = Math.min(milliseconds / changeLevelA, milliseconds / changeLevelB);
+		double deltaA = 0;
+		if(changeLevelA != 0) {
+			deltaA = milliseconds / changeLevelA;
+		}
 		
+		double deltaB = 0;
+		if(changeLevelB != 0) {
+			deltaB = milliseconds / changeLevelB;
+		}
+				
 		final long timeStart = System.currentTimeMillis();
 		
 		while(System.currentTimeMillis() < timeStart + milliseconds) {
 			
-			// TODO:
+			final long elapsedTime = System.currentTimeMillis() - timeStart;
 			
-			Thread.sleep(sleep);
+			final short offsetA = (short) (elapsedTime * deltaA);
+			final short offsetB = (short) (elapsedTime * deltaB);
+			
+			eStimDevice.setA((short) (eStimDeviceState.getA() + offsetA));
+			eStimDevice.setB((short) (eStimDeviceState.getB() + offsetB));
+
+			Thread.sleep(100);
 		}
 		
 		return eStimDevice.getState();

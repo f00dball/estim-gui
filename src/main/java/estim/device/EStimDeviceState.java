@@ -56,6 +56,17 @@ public class EStimDeviceState {
 		
 		System.out.println(this);
 	}
+	
+	public EStimDeviceState(final short a, final short b, final short c, final short d, 
+			final ProgramMode programMode, final boolean highPowerMode) {
+		
+		this.a = a;
+		this.b = b;
+		this.c = c;
+		this.d = d;
+		this.programMode = programMode;
+		this.highPowerMode = highPowerMode;
+	}
 
 	public static short parseShort(final String shortValue) {
 		try {

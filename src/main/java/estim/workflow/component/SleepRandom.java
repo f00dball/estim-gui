@@ -6,13 +6,13 @@ import java.util.concurrent.TimeUnit;
 import estim.device.EStimDevice;
 import estim.device.EStimDeviceState;
 
-public class SleepRandomWorkflowComponent implements WorkflowComponent {
+public class SleepRandom implements WorkflowComponent {
 	
 	private TimeUnit timeUnit;
 	private int minTime;
 	private int maxTime;
 
-	public SleepRandomWorkflowComponent(final int minTime, final int maxTime, final TimeUnit timeUnit) {
+	public SleepRandom(final int minTime, final int maxTime, final TimeUnit timeUnit) {
 		this.minTime = minTime;
 		this.maxTime = maxTime;
 		this.timeUnit = timeUnit;

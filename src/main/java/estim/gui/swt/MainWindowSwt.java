@@ -35,6 +35,7 @@ public class MainWindowSwt {
 	private void connect() {
 		try {
 			estim.open();
+			estim.refreshState();
 			statusMessage = estim.getState().toString();
 			
 		} catch (DeviceException e) {
@@ -45,24 +46,23 @@ public class MainWindowSwt {
 	}
 	
 	private void updateChannel(EstimDeviceProperties field, short input) {
-		short value = (short)(2.55 * input);
 		
 		// TODO check estim state
 		try {
 			switch (field) {
 			case CHANNEL_A:
-				estim.setA(value);
+				estim.setA(input);
 				break;
 			case CHANNEL_B:
-				estim.setB(value);
+				estim.setB(input);
 				break;
 			case CHANNEL_C:
 				currentFrequencyLabel.setText(input + "   ");
-				estim.setC(value);				
+				estim.setC(input);				
 				break;
 			case CHANNEL_D:
 				currentPulseLabel.setText(input + "   ");
-				estim.setD(value);
+				estim.setD(input);
 				break;				
 			default:
 				statusMessage = "Unknown value: " + field;					
@@ -79,7 +79,7 @@ public class MainWindowSwt {
 	}
 	
 	private void updateProgramMode(String mode) {
-		ProgramMode programMode = ProgramMode.valueOf(ProgramMode.class, mode);
+		ProgramMode programMode = ProgramMode.valueOf(mode);
 
 		try {
 			estim.setProgramMode(programMode);

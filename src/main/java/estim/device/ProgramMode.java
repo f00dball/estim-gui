@@ -1,4 +1,6 @@
-package estim.gui;
+package estim.device;
+
+import java.util.Arrays;
 
 public enum ProgramMode {
 	
@@ -30,4 +32,13 @@ public enum ProgramMode {
 	public short getProgramNumber() {
 		return programNumber;
 	}
+	
+	public static ProgramMode getFromProgramNumber(final short programNumber) {
+		return Arrays.asList(values())
+				.stream()
+				.filter(p -> p.getProgramNumber() == programNumber)
+				.findAny()
+				.orElseThrow(() -> new IllegalArgumentException("Unknown program number: " + programNumber));
+	}
+
 }

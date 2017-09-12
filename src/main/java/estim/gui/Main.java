@@ -9,6 +9,7 @@ import java.util.Observer;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 
+import estim.device.EStimDevice;
 import estim.gui.gui.MainWindow;
 import estim.gui.gui.ObservableString;
 import estim.gui.gui.PortSelectorWindow;

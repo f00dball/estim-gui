@@ -1,4 +1,4 @@
-package estim.gui;
+package estim.device;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,7 +11,7 @@ import java.util.Random;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import estim.gui.util.CloseableHelper;
+import estim.util.CloseableHelper;
 import gnu.io.CommPortIdentifier;
 import gnu.io.SerialPort;
 
@@ -158,6 +158,12 @@ public class EStimDevice {
 	}
 	
 	public void close() throws DeviceException {
+
+		CloseableHelper.closeWithoutException(inputStream);
+		inputStream = null;
+		
+		CloseableHelper.closeWithoutException(outputStream);
+		outputStream = null;
 		
 		if(serialPort != null) {
 			// Disable outputs 
@@ -167,11 +173,6 @@ public class EStimDevice {
 			serialPort = null;
 		}
 		
-		CloseableHelper.closeWithoutException(inputStream);
-		inputStream = null;
-		
-		CloseableHelper.closeWithoutException(outputStream);
-		outputStream = null;
 	}
 	
 	public EStimDeviceState getState() {

@@ -158,6 +158,12 @@ public class EStimDevice {
 	}
 	
 	public void close() throws DeviceException {
+
+		CloseableHelper.closeWithoutException(inputStream);
+		inputStream = null;
+		
+		CloseableHelper.closeWithoutException(outputStream);
+		outputStream = null;
 		
 		if(serialPort != null) {
 			// Disable outputs 
@@ -167,11 +173,6 @@ public class EStimDevice {
 			serialPort = null;
 		}
 		
-		CloseableHelper.closeWithoutException(inputStream);
-		inputStream = null;
-		
-		CloseableHelper.closeWithoutException(outputStream);
-		outputStream = null;
 	}
 	
 	public EStimDeviceState getState() {

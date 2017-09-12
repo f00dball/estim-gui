@@ -1,4 +1,4 @@
-package scripting;
+package estim.scripting;
 
 public class EstimLanguage implements Language {
 	private final static Matcher newLineMatcher = new RegExMatcher("New Line", "[\r\n|\n]");

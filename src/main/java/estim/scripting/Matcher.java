@@ -1,4 +1,4 @@
-package scripting;
+package estim.scripting;
 
 public interface Matcher {
 	public String getName();

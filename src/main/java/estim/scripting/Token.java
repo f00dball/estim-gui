@@ -1,4 +1,4 @@
-package scripting;
+package estim.scripting;
 
 public class Token {
 	private final String type;

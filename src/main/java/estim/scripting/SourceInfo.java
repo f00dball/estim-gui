@@ -1,4 +1,4 @@
-package scripting;
+package estim.scripting;
 
 public class SourceInfo {
 	private final String content;

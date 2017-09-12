@@ -1,4 +1,4 @@
-package scripting;
+package estim.scripting;
 
 public class MatchInfo {
 	private final String content;

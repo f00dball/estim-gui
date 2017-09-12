@@ -1,4 +1,4 @@
-package estim.gui;
+package estim.device;
 
 public enum ProgramMode {
 	

@@ -1,4 +1,4 @@
-package estim.gui.util;
+package estim.util;
 
 import java.io.Closeable;
 import java.io.IOException;

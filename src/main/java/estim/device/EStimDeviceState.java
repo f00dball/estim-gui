@@ -18,6 +18,8 @@ public class EStimDeviceState {
 	protected short c;
 	
 	protected short d;
+	
+	protected ProgramMode programMode;
 
 	/**
 	 * The logger
@@ -41,6 +43,8 @@ public class EStimDeviceState {
 		b = (short) (parseShort(splitState[2]) / 2);
 		c = (short) (parseShort(splitState[3]) / 2);
 		d = (short) (parseShort(splitState[4]) / 2);
+		
+		programMode = ProgramMode.getFromProgramNumber(parseShort(splitState[5]));
 		
 		if("L".equals(splitState[6])) {
 			highPowerMode = false;
@@ -96,13 +100,16 @@ public class EStimDeviceState {
 		return d;
 	}
 
+	public ProgramMode getProgramMode() {
+		return programMode;
+	}
 
 	@Override
 	public String toString() {
 		return "EStimDeviceState [firmwareVersion=" + firmwareVersion + ", highPowerMode=" + highPowerMode
-				+ ", energySource=" + energySource + ", a=" + a + ", b=" + b + ", c=" + c + ", d=" + d + "]";
+				+ ", energySource=" + energySource + ", a=" + a + ", b=" + b + ", c=" + c + ", d=" + d
+				+ ", programMode=" + programMode + "]";
 	}
-
 
 	@Override
 	public int hashCode() {
@@ -112,12 +119,10 @@ public class EStimDeviceState {
 		result = prime * result + b;
 		result = prime * result + c;
 		result = prime * result + d;
-		result = prime * result + energySource;
-		result = prime * result + ((firmwareVersion == null) ? 0 : firmwareVersion.hashCode());
 		result = prime * result + (highPowerMode ? 1231 : 1237);
+		result = prime * result + ((programMode == null) ? 0 : programMode.hashCode());
 		return result;
 	}
-
 
 	@Override
 	public boolean equals(Object obj) {
@@ -136,14 +141,9 @@ public class EStimDeviceState {
 			return false;
 		if (d != other.d)
 			return false;
-		if (energySource != other.energySource)
-			return false;
-		if (firmwareVersion == null) {
-			if (other.firmwareVersion != null)
-				return false;
-		} else if (!firmwareVersion.equals(other.firmwareVersion))
-			return false;
 		if (highPowerMode != other.highPowerMode)
+			return false;
+		if (programMode != other.programMode)
 			return false;
 		return true;
 	}

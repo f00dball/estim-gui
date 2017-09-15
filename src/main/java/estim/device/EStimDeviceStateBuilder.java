@@ -4,8 +4,8 @@ public class EStimDeviceStateBuilder {
 
 	protected short aLevel = 0;
 	protected short bLevel = 0;
-	protected short cLevel = 0;
-	protected short dLevel = 0;
+	protected short cLevel = 50;
+	protected short dLevel = 50;
 	protected boolean highPowerMode = false;
 	protected ProgramMode programMode = ProgramMode.PULSE;
 	

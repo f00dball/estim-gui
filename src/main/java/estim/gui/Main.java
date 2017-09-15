@@ -82,7 +82,7 @@ public class Main {
 		
 		final MainWindow mainWindow = new MainWindow(port);
 		
-		final AudioWorker audioWorker = new AudioWorker(mainWindow.getAudioTextField());
+		final AudioWorker audioWorker = new AudioWorker(null);
 		(new Thread(audioWorker)).start();
 		
 		final ControllerWorker controllerWorker = new ControllerWorker(mainWindow, is, os);

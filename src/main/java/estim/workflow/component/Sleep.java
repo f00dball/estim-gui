@@ -5,12 +5,12 @@ import java.util.concurrent.TimeUnit;
 import estim.device.EStimDevice;
 import estim.device.EStimDeviceState;
 
-public class SleepWorkflowComponent implements WorkflowComponent {
+public class Sleep implements WorkflowComponent {
 	
 	private int time;
 	private TimeUnit timeUnit;
 
-	public SleepWorkflowComponent(final int time, final TimeUnit timeUnit) {
+	public Sleep(final int time, final TimeUnit timeUnit) {
 		this.time = time;
 		this.timeUnit = timeUnit;
 	}

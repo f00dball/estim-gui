@@ -30,6 +30,11 @@ public class AdjustOuputLevelOverTime implements WorkflowComponent {
 		final double deltaA = (double) changeLevelA / (double) milliseconds;
 		final double deltaB = (double) changeLevelB / (double) milliseconds;
 		
+		final short totalA = (short) (eStimDeviceState.getA() + changeLevelA);
+		final short totalB = (short) (eStimDeviceState.getB() + changeLevelB);
+		
+		System.out.println(String.format("Destination output level a=%d b=%d\n", totalA, totalB));
+		
 		final long timeStart = System.currentTimeMillis();
 		
 		while(System.currentTimeMillis() < timeStart + milliseconds) {
@@ -44,12 +49,11 @@ public class AdjustOuputLevelOverTime implements WorkflowComponent {
 
 			Thread.sleep(100);
 		}
-		
-		eStimDevice.setA((short) (eStimDeviceState.getA() + changeLevelA));
-		eStimDevice.setB((short) (eStimDeviceState.getB() + changeLevelB));
+
+		eStimDevice.setA(totalA);
+		eStimDevice.setB(totalB);
 
 		return eStimDevice.getState();
-		
 	}
 
 	@Override

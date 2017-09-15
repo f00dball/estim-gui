@@ -28,7 +28,14 @@ public class SleepRandom implements WorkflowComponent {
 		final Random random = new Random();
 		final int randomTime = random.nextInt(maxTime - minTime);
 		
-		Thread.sleep(timeUnit.toMillis(minTime + randomTime));
+		final int sleepSeconds = (int) timeUnit.toMillis(minTime + randomTime) / 1000;
+		
+		System.out.println("Sleep seconds: " + sleepSeconds);
+		for(int i = 0; i < sleepSeconds; i++) {
+			System.out.print(i + " ");
+			System.out.flush();
+			Thread.sleep(1000);
+		}
 		
 		return eStimDeviceState;
 	}

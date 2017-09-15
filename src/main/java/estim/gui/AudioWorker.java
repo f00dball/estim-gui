@@ -1,6 +1,6 @@
 package estim.gui;
 
-import java.awt.Color;
+import java.util.function.Consumer;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
@@ -8,7 +8,6 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.DataLine;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.TargetDataLine;
-import javax.swing.JTextField;
 
 import org.apache.log4j.Logger;
 
@@ -17,18 +16,20 @@ public class AudioWorker implements Runnable {
 	protected Logger logger = Logger.getLogger(AudioWorker.class);
 	
 	protected static TargetDataLine targetDataLine;
-	protected static AudioInputStream m_audioInputStream;
-	protected volatile boolean active = true;
 	
+	protected static AudioInputStream m_audioInputStream;
+		
 	protected OutputHistory outputHistory = new OutputHistory();
 	
-	protected JTextField textFieldToUpdate;
-	protected int movingAverage[] = new int[5];
-	protected int maPos = 0;
+	protected int movingAverage[] = new int[10];
 	
-	public AudioWorker(JTextField textfield) {
+	protected int maPos = 0;
+
+	protected Consumer<Integer> resultConsumer;
+	
+	public AudioWorker(final Consumer<Integer> resultConsumer) {
+		this.resultConsumer = resultConsumer;
 		setup();
-		this.textFieldToUpdate = textfield;
 	}
 	
 	protected void setup() {
@@ -70,9 +71,9 @@ public class AudioWorker implements Runnable {
 	public void run() {
 		targetDataLine.start();
 
-		byte[] tempBuffer = new byte[4096];
+		final byte[] tempBuffer = new byte[256];
 		
-		while(active) {
+		while(! Thread.currentThread().isInterrupted()) {
 			int cnt = targetDataLine.read(tempBuffer, 0, tempBuffer.length);
 			int max = 0;
 			
@@ -84,7 +85,7 @@ public class AudioWorker implements Runnable {
 				}				
 			}
 
-			updateGui(max);
+			updateMovingAverage(max);
 
 			try {
 				Thread.sleep(5);
@@ -95,8 +96,8 @@ public class AudioWorker implements Runnable {
 		}
 	}
 
-	private void updateGui(int max) {
-		movingAverage[maPos] = max;
+	private void updateMovingAverage(final int value) {
+		movingAverage[maPos] = value;
 		logger.debug(maPos + " " + movingAverage[maPos]);
 		maPos = (maPos + 1) % movingAverage.length;
 		
@@ -104,31 +105,16 @@ public class AudioWorker implements Runnable {
 		for(int i = 0; i < movingAverage.length; i++)
 			sum = sum + movingAverage[i];
 		
-		sum = sum / movingAverage.length;
-		final String maxFinal = Integer.toString(sum);
-
-		if(! "".equals(textFieldToUpdate.getText())) {
-			final int oldValue = Integer.parseInt(textFieldToUpdate.getText());
-			
-			if(oldValue < max) {
-				textFieldToUpdate.setBackground(Color.GREEN);
-			} else if(oldValue == max) {
-				textFieldToUpdate.setBackground(Color.WHITE);
-			} else {
-				textFieldToUpdate.setBackground(Color.RED);
-			}
+		final int ma = sum / movingAverage.length;	
+		
+		if(resultConsumer != null) {
+			resultConsumer.accept(ma);
 		}
-		
-		outputHistory.addValue(sum);
-		
-		textFieldToUpdate.setText(maxFinal);
 	}
+	
 	
 	public OutputHistory getOutputHistory() {
 		return outputHistory;
 	}
 
-	public void shutdown() {
-		this.active = false;
-	}
 }

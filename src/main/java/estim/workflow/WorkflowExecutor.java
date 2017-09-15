@@ -8,6 +8,8 @@ import estim.device.EStimDeviceState;
 import estim.device.EStimDeviceStateBuilder;
 import estim.device.ProgramMode;
 import estim.workflow.component.AdjustOuputLevelOverTime;
+import estim.workflow.component.AudioLevel;
+import estim.workflow.component.SetupEstimDevice;
 import estim.workflow.component.SleepRandom;
 import estim.workflow.component.WorkflowComponent;
 
@@ -30,6 +32,9 @@ public class WorkflowExecutor {
 	}
 	
 	public void execute() throws InterruptedException, DeviceException {
+		
+		final SetupEstimDevice setupEstimDevice = new SetupEstimDevice(eStimDeviceState);
+		setupEstimDevice.execute(eStimDevice, eStimDeviceState);
 		
 		try {
 			for(int loop = 0; loop < loops; loop++) {
@@ -63,15 +68,18 @@ public class WorkflowExecutor {
 		eStimDevice.open();
 		
 		final EStimDeviceState eStimDeviceState = EStimDeviceStateBuilder.create()
-				.withALevel((short) 15)
+				.withALevel((short) 10)
 				.withProgramMode(ProgramMode.CONTINOUS)
+		//		.withHighPowerMode(true)
 				.build();
 
 		final Workflow workflow = Workflow.create()
-				.addNextWorkflowComponent(new AdjustOuputLevelOverTime(5, TimeUnit.SECONDS, (short) 20, (short) 0))
-				.addNextWorkflowComponent(new SleepRandom(10, 40, TimeUnit.SECONDS))
-				.addNextWorkflowComponent(new AdjustOuputLevelOverTime(-3, TimeUnit.SECONDS, (short) 10, (short) 0));
-				
+		//		.addNextWorkflowComponent(new AdjustOuputLevelOverTime(20, TimeUnit.SECONDS, (short) 8, (short) 0))
+		//		.addNextWorkflowComponent(new SleepRandom(10, 30, TimeUnit.SECONDS))
+				.addNextWorkflowComponent(new AudioLevel(15, 0, 5, 60, TimeUnit.SECONDS))
+				.addNextWorkflowComponent(new AdjustOuputLevelOverTime(5, TimeUnit.SECONDS, (short) -5, (short) 0))
+				.addNextWorkflowComponent(new SleepRandom(5, 15, TimeUnit.SECONDS));
+
 		final WorkflowExecutor workflowExecutor = new WorkflowExecutor(eStimDevice, eStimDeviceState, workflow);
 		workflowExecutor.setLoops(5);
 		workflowExecutor.execute();
